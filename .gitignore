@@ -1,0 +1,4 @@
+# Ignorar archivos grandes
+.geojson
+.env
+__pycache__/

@@ -1,0 +1,131 @@
+/* Contenedor centrado */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 1000px;
+  text-align: center;
+}
+
+/* Mapa en recuadro centrado */
+#map {
+  height: 80vh;
+  border: 3px solid #0077b6;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  margin: 20px auto;
+}
+
+#partidaInput {
+  margin-bottom: 5px;
+}
+
+/* Controles centrados y estilizados */
+.controls {
+  margin-bottom: 10px;
+}
+
+.controls input[type="text"] {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #0077b6;
+  width: 200px;
+  font-size: 16px;
+}
+
+.controls button {
+  padding: 8px 16px;
+  margin-left: 8px;
+  border: none;
+  border-radius: 8px;
+  background-color: #0077b6;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.controls button:hover {
+  background-color: #023e8a;
+}
+
+.toast {
+    position: absolute;
+    top: 25vh;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0077b6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-weight: bold;
+    display: none;
+    z-index: 1000; /* arriba del mapa */
+    opacity: 0.95;
+}
+
+/* Mensaje flotante (toast) */
+#toastPartida {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #035c8c;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  padding: 12px;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+#toastPartida.show {
+  visibility: visible;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+  from { bottom: 0; opacity: 0; }
+  to { bottom: 30px; opacity: 1; }
+}
+
+@keyframes fadeout {
+  from { bottom: 30px; opacity: 1; }
+  to { bottom: 0; opacity: 0; }
+}
+
+.copy-btn {
+  margin-left: 8px;
+  padding: 5px;
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0077b6;
+  color: white;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background-color: #023e8a;
+}
+
+.distancia-widget {
+  background: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
