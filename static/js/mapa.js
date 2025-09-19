@@ -68,46 +68,71 @@ function borrarRuta() {
   resetearDistancia();
 }
 
-// Cargar GeoJSON
-fetch("/static/geojson/parcelas.geojson")
+// --- Cargar descripciones y parcelas ---
+let descripcionesData = {}; // objeto donde guardamos descripciones
+
+// 1) Cargar descripciones primero
+fetch("/static/descripciones.json")
   .then(res => res.json())
   .then(data => {
-    geojsonLayerData = data;
-    parcelasLayer = L.geoJSON(data, {
-      style: estiloDefault,
-      onEachFeature: function(feature, layer) {
-       layer.bindPopup(
-        `<b>Partida:</b> ${feature.properties.PDA || "N/A"} 
-        <button class="copy-btn" data-partida="${feature.properties.PDA}">📋 Copiar</button><br>
-        <b>Tipo:</b> ${feature.properties.TPA || "N/A"}<br>
-        <b>Superficie (ha):</b> ${
-          feature.properties.ARA1 ? (feature.properties.ARA1 / 10000).toFixed(2) : "N/A"
-        }`
-      );
-      // Evento click en parcela
-        layer.on("click", function () {
-          borrarResaltado(); // quita resaltado previo
+    descripcionesData = data; // guardamos en variable global
+  })
+  .catch(err => {
+    console.warn("No se pudo cargar descripciones.json:", err);
+    descripcionesData = {}; // seguimos con objeto vacío
+  })
+  .finally(() => {
+    // 2) Cargar GeoJSON de parcelas
+    fetch("/static/geojson/parcelas.geojson")
+      .then(res => res.json())
+      .then(data => {
+        geojsonLayerData = data;
 
-          resaltadoLayer = L.geoJSON(feature, {
-            style: estiloResaltado
-          }).addTo(map);
+        parcelasLayer = L.geoJSON(data, {
+          style: estiloDefault,
+          onEachFeature: function(feature, layer) {
+            // si hay descripción en el JSON, la agregamos
+            let descripcionExistente = descripcionesData[feature.properties.PDA] || "";
 
-          // Popup en la capa resaltada
-          resaltadoLayer.eachLayer(function(subLayer) {
-            subLayer.bindPopup(
+            layer.bindPopup(
               `<b>Partida:</b> ${feature.properties.PDA || "N/A"} 
               <button class="copy-btn" data-partida="${feature.properties.PDA}">📋 Copiar</button><br>
+              <hr>
               <b>Tipo:</b> ${feature.properties.TPA || "N/A"}<br>
-              <b>Superficie (ha):</b> ${
-                feature.properties.ARA1 ? (feature.properties.ARA1 / 10000).toFixed(2) : "N/A"
-              }`
-          ).openPopup();
-          });
+              <b>Superficie (ha):</b> ${feature.properties.ARA1 ? (feature.properties.ARA1/10000).toFixed(2) : "N/A"}<br>
+              <hr>
+              <b>Descripción:</b> 
+              <input type="text" class="descripcion-input" id="desc-${feature.properties.PDA}" placeholder="Agregar descripción" value="${descripcionExistente}">
+              <button class="save-desc-btn" data-pda="${feature.properties.PDA}">💾</button>`
+            );
 
-          map.fitBounds(resaltadoLayer.getBounds());
-        });
-      }
-    }).addTo(map);
+            // Evento click en parcela
+            layer.on("click", function () {
+              borrarResaltado();
+              resaltadoLayer = L.geoJSON(feature, { style: estiloResaltado }).addTo(map);
+              // Ajustar zoom antes de abrir popup
+              map.fitBounds(resaltadoLayer.getBounds());
+              let descripcionExistente = descripcionesData[feature.properties.PDA] || "";
+              resaltadoLayer.eachLayer(function(subLayer) {
+                subLayer.bindPopup(
+                  `<b>Partida:</b> ${feature.properties.PDA || "N/A"} 
+                  <button class="copy-btn" data-partida="${feature.properties.PDA}">📋 Copiar</button><br>
+                  <hr>
+                  <b>Tipo:</b> ${feature.properties.TPA || "N/A"}<br>
+                  <b>Superficie (ha):</b> ${feature.properties.ARA1 ? (feature.properties.ARA1/10000).toFixed(2) : "N/A"}<br>
+                  <hr>
+                  <b>Descripción:</b> 
+                  <input type="text" class="descripcion-input" id="desc-${feature.properties.PDA}" placeholder="Agregar descripción" value="${descripcionExistente}">
+                  <button class="save-desc-btn" data-pda="${feature.properties.PDA}">💾</button>`
+                ).openPopup();
+              });
+
+              map.fitBounds(resaltadoLayer.getBounds());
+            });
+          }
+        }).addTo(map);
+      })
+      .catch(err => console.error("Error cargando parcelas:", err));
   });
 
 // Buscar partida
@@ -127,15 +152,21 @@ function buscarPartida() {
 
     let bounds = resaltadoLayer.getBounds();
     let centroide = bounds.getCenter();
-
+      // 🔑 Ahora tomamos la descripción del JSON cargado
+    let descripcionExistente = descripcionesData[encontrado.properties.PDA] || "";
     resaltadoLayer.eachLayer(function(layer) {
       layer.bindPopup(
           `<b>Partida:</b> ${encontrado.properties.PDA || "N/A"} 
           <button class="copy-btn" data-partida="${encontrado.properties.PDA}">📋 Copiar</button><br>
+          <hr>
           <b>Tipo:</b> ${encontrado.properties.TPA || "N/A"}<br>
           <b>Superficie (ha):</b> ${
             encontrado.properties.ARA1 ? (encontrado.properties.ARA1 / 10000).toFixed(2) : "N/A"
-          }`
+          }<br>
+          <hr>
+          <b>Descripción:</b> 
+          <input type="text" class="descripcion-input" id="desc-${encontrado.properties.PDA}" placeholder="Agregar descripción" value="${descripcionExistente}">
+          <button class="save-desc-btn" data-pda="${encontrado.properties.PDA}">💾</button>`
         ).openPopup();
     });
  map.fitBounds(resaltadoLayer.getBounds());
@@ -190,7 +221,7 @@ async function trazarRuta(latDestino, lonDestino) {
       if (!dataORS.features || dataORS.features.length === 0) throw new Error("Sin rutas ORS");
 
       rutaLayer = L.geoJSON(dataORS, {
-        style: { color: "limegreen", weight: 5, opacity: 1, dashArray: "20 8" }
+        style: { color: "lime", weight: 5, opacity: 1, dashArray: "20 8" }
       }).addTo(map);
 
       map.fitBounds(rutaLayer.getBounds());
@@ -219,7 +250,7 @@ async function trazarRuta(latDestino, lonDestino) {
 
       const ruta = dataOSRM.routes[0].geometry;
       rutaLayer = L.geoJSON(ruta, {
-        style: { color: "limegreen", weight: 5, opacity: 1, dashArray: "20 8" }
+        style: { color: "lime", weight: 5, opacity: 1, dashArray: "20 8" }
       }).addTo(map);
 
       map.fitBounds(rutaLayer.getBounds());
@@ -292,7 +323,71 @@ distanciaControl.onAdd = function(map) {
 distanciaControl.update = function(distancia) {
     this._div.innerHTML = distancia 
         ? `<b>Distancia del recorrido:</b><br>${distancia} km` 
-        : 'Traza una ruta para ver la distancia';
+        : '📌 Traza una ruta para ver la distancia';
 };
 
 distanciaControl.addTo(map);
+
+    // Guardar descripción
+document.addEventListener("click", function (e) {
+  if (e.target && e.target.classList.contains("save-desc-btn")) {
+    const pda = e.target.getAttribute("data-pda");
+    const input = document.getElementById(`desc-${pda}`);
+    if (input) {
+      const descripcion = input.value.trim();
+
+      // Actualizamos en el feature
+      const parcela = geojsonLayerData.features.find(f => f.properties.PDA === pda);
+      if (parcela) {
+        parcela.properties.descripcion = descripcion;
+
+        // Enviar al backend para persistir
+        fetch("/guardar_descripcion", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ partida: pda, descripcion: descripcion })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              mostrarToast("✅ Descripción guardada");
+
+              // Actualizar feature en memoria
+              const feature = geojsonLayerData.features.find(f => f.properties.PDA === pda);
+              if (feature) feature.properties.descripcion = descripcion;
+
+              // 🔑 Actualizar el JSON en memoria
+              descripcionesData[pda] = descripcion;
+
+              // Actualizar el popup abierto
+              map.eachLayer(layer => {
+                if (layer.feature && layer.feature.properties.PDA === pda && layer.getPopup()) {
+                  const nuevoPopup = `<b>Partida:</b> ${pda} 
+              <button class="copy-btn" data-partida="${pda}">📋 Copiar</button><br>
+              <hr>
+              <b>Tipo:</b> ${layer.feature.properties.TPA || "N/A"}<br>
+              <b>Superficie (ha):</b> ${layer.feature.properties.ARA1 ? (layer.feature.properties.ARA1 / 10000).toFixed(2) : "N/A"
+                    }<br>
+                    <hr>
+              <b>Descripción:</b> 
+              <input type="text" class="descripcion-input" id="desc-${pda}" placeholder="Agregar descripción" value="${descripcion}">
+              <button class="save-desc-btn" data-pda="${pda}">💾</button>`;
+
+                  layer.setPopupContent(nuevoPopup).openPopup();
+                }
+              });
+            }
+            else {
+              mostrarToast("❌ Error al guardar");
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            mostrarToast("❌ Error al guardar");
+          });
+      }
+    }
+  }
+});

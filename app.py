@@ -9,6 +9,9 @@ load_dotenv()
 app = Flask(__name__)
 ORS_API_KEY = os.getenv("ORS_API_KEY")
 
+# Archivo JSON donde se guardarán las descripciones
+DESCRIPCIONES_FILE = os.path.join("static", "descripciones.json")
+
 # --- Página principal ---
 @app.route("/")
 def index():
@@ -21,6 +24,7 @@ def get_parcelas():
     with open(geojson_path, "r", encoding="utf-8") as f:
         data = json.load(f)
     return jsonify(data)
+
 
 # --- Endpoint para calcular ruta (API Key oculta) ---
 @app.route("/ruta", methods=["POST"])
@@ -44,6 +48,31 @@ def ruta():
         return jsonify(response.json())
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
+
+# Cargar descripciones existentes
+if os.path.exists(DESCRIPCIONES_FILE):
+    with open(DESCRIPCIONES_FILE, "r", encoding="utf-8") as f:
+        descripciones = json.load(f)
+else:
+    descripciones = {}
+
+@app.route("/guardar_descripcion", methods=["POST"])
+def guardar_descripcion():
+    data = request.get_json()
+    partida = data.get("partida")
+    descripcion = data.get("descripcion", "")
+
+    if not partida:
+        return jsonify({"success": False, "error": "Falta la partida"}), 400
+
+    # Guardar en memoria
+    descripciones[partida] = descripcion
+
+    # Guardar en archivo
+    with open(DESCRIPCIONES_FILE, "w", encoding="utf-8") as f:
+        json.dump(descripciones, f, ensure_ascii=False, indent=2)
+
+    return jsonify({"success": True})
 
 if __name__ == "__main__":
     app.run(debug=True)
