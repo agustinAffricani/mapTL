@@ -17,9 +17,26 @@
     <input type="text" id="partidaInput" placeholder="Ingrese partida...">
     <div id="toastPartida"></div>
     <button onclick="buscarPartida()">🔎 Buscar</button>
+    <button id="btnBuscarDesc">📋 Buscar por Descripción</button>
     <button onclick="borrarResaltado(); borrarRuta();">🗑️ Borrar búsqueda</button>
   </div>
-
+  <div id="modalDesc" class="modal">
+    <div class="modal-content">
+      <span class="close">x</span>
+      <h3>📋 Partidas con Descripciones</h3>
+      <table id="tablaDescripciones">
+        <thead>
+          <tr>
+            <th>Partida</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- filas dinámicas -->
+        </tbody>
+      </table>
+    </div>
+  </div>
   <div id="map"></div>
 </div>
 

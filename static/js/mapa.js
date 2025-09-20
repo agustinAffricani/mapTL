@@ -57,7 +57,9 @@ function borrarResaltado() {
     map.removeLayer(resaltadoLayer);
     resaltadoLayer = null;
   }
-   resetearDistancia();
+   // Cerrar cualquier popup abierto
+    map.closePopup();
+    resetearDistancia();
 }
 
 function borrarRuta() {
@@ -322,8 +324,8 @@ distanciaControl.onAdd = function(map) {
 
 distanciaControl.update = function(distancia) {
     this._div.innerHTML = distancia 
-        ? `<b>Distancia del recorrido:</b><br>${distancia} km` 
-        : '📌 Traza una ruta para ver la distancia';
+        ? `<b>📍 Distancia del recorrido: </b>${distancia} km` 
+        : '📌 Busca partida para trazar ruta';
 };
 
 distanciaControl.addTo(map);
@@ -391,3 +393,83 @@ document.addEventListener("click", function (e) {
     }
   }
 });
+
+document.getElementById("btnBuscarDesc").addEventListener("click", () => {
+  fetch("/list_descripciones")
+    .then(res => res.json())
+    .then(data => {
+      let tbody = document.querySelector("#tablaDescripciones tbody");
+      tbody.innerHTML = ""; // limpiar antes de cargar
+      Object.entries(data).forEach(([partida, descripcion]) => {
+        let tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${partida}</td>
+          <td>${descripcion}</td>
+        `;
+        // al hacer click → centrar en mapa
+        tr.addEventListener("click", () => {
+          centrarEnParcela(partida);
+          cerrarModal();
+        });
+        tbody.appendChild(tr);
+      });
+      abrirModal();
+    })
+    .catch(err => console.error("Error cargando descripciones:", err));
+});
+
+// Funciones modal
+function abrirModal() {
+  document.getElementById("modalDesc").style.display = "block";
+}
+function cerrarModal() {
+  document.getElementById("modalDesc").style.display = "none";
+}
+document.querySelector("#modalDesc .close").addEventListener("click", cerrarModal);
+
+// Centrar en mapa según partida
+function centrarEnParcela(partida) {
+  let encontrada = false;
+  parcelasLayer.eachLayer(layer => {
+    if (layer.feature.properties.PDA == partida) {
+      encontrada = true;
+// Resaltar la parcela (igual que cuando hacés click)
+      if (resaltadoLayer) {
+        map.removeLayer(resaltadoLayer);
+      }
+      resaltadoLayer = L.geoJSON(layer.toGeoJSON(), {
+        style: estiloResaltado
+      }).addTo(map);
+
+      // Buscar la descripción actual
+      let descripcion = descripcionesData[partida] || "";
+
+      // Crear popup igual que en los clicks
+      let superficie = layer.feature.properties.ARA1 
+        ? (layer.feature.properties.ARA1 / 10000).toFixed(2)
+        : "N/A";
+
+      layer.bindPopup(`
+        <b>Partida:</b> ${layer.feature.properties.PDA || "N/A"} 
+        <button class="copy-btn" data-partida="${layer.feature.properties.PDA}">📋 Copiar</button><br>
+        <hr>
+        <b>Tipo:</b> ${layer.feature.properties.TPA || "N/A"}<br>
+        <b>Superficie (ha):</b> ${superficie}<br>
+        <hr>
+        <b>Descripción:</b>
+        <input type="text" class="descripcion-input" id="desc-${layer.feature.properties.PDA}" 
+               placeholder="Agregar descripción" value="${descripcion}">
+        <button class="save-desc-btn" data-pda="${layer.feature.properties.PDA}">💾</button>
+      `);
+
+      // Zoom + abrir popup
+      map.fitBounds(layer.getBounds());
+      layer.openPopup();
+    }
+  });
+
+  if (!encontrada) {
+    console.warn("No se encontró la partida en el mapa:", partida);
+  }
+}
+

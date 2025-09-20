@@ -74,5 +74,15 @@ def guardar_descripcion():
 
     return jsonify({"success": True})
 
+#Endpoint para listar partidas + descripciones
+@app.route("/list_descripciones")
+def list_descripciones():
+    try:
+        with open("static/descripciones.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
 if __name__ == "__main__":
     app.run(debug=True)
