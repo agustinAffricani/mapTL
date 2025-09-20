@@ -53,16 +53,19 @@ Permite buscar partidas, agregar y ver sus descripciones, trazar rutas y más.
 ## 📂 Estructura básica del proyecto
 
 mapTL/
-├── app.py # Servidor Flask
-├── requirements.txt # Dependencias del proyecto
+├── app.py
+├── requirements.txt
 ├── static/
-│ ├── css/
-│ ├── js/
-│ │ └── mapa.js # Lógica del mapa
-│ └── geojson/
-│ └── parcelas.geojson
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── mapa.js
+│   ├── geojson/
+│   │   └── parcelas.geojson
+│   └── descripciones.json
 ├── templates/
-│ └── index.html # Página principal
-└── README.md # Este archivo
+│   └── index.html
+└── README.md
+
 
 ##✍️ Desarrollado por Agustín Affricani
