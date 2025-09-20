@@ -52,19 +52,20 @@ Permite buscar partidas, agregar y ver sus descripciones, trazar rutas y más.
 
 ## 📂 Estructura básica del proyecto
 
-'''mapTL/
-├── app.py
-├── requirements.txt
+mapTL/
+├── app.py                  # Archivo principal de Flask
+├── requirements.txt        # Dependencias de Python
 ├── static/
 │   ├── css/
-│   │   └── style.css
+│   │   └── style.css       # Estilos de la aplicación
 │   ├── js/
-│   │   └── mapa.js
+│   │   └── mapa.js         # Lógica del mapa y búsquedas
 │   ├── geojson/
-│   │   └── parcelas.geojson
-│   └── descripciones.json
+│   │   └── parcelas.geojson # Datos de las parcelas
+│   └── descripciones.json  # Descripciones guardadas por partida
 ├── templates/
-│   └── index.html
-└── README.md'''
+│   └── index.html          # Plantilla principal
+└── README.md               # Este archivo
+
 
 ##✍️ Desarrollado por Agustín Affricani
