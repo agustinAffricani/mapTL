@@ -56,20 +56,22 @@ body {
   background-color: #023e8a;
 }
 
-.toast {
-    position: absolute;
-    top: 25vh;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #0077b6;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    font-weight: bold;
-    display: none;
-    z-index: 1000; /* arriba del mapa */
-    opacity: 0.95;
+/* Toast genérico */
+#toast, .toast {
+  position: fixed;         /* siempre fijo en pantalla */
+  top: 20px;               /* separación desde el top */
+  left: 50%;               /* centrado horizontal */
+  transform: translateX(-50%);
+  background-color: #0077b6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 9999;           /* muy arriba, sobre otros elementos */
+  opacity: 0.95;
+  display: none;           /* se muestra con JS */
 }
 
 /* Mensaje flotante (toast) */
@@ -84,7 +86,7 @@ body {
   position: fixed;
   z-index: 1000;
   left: 50%;
-  bottom: 30px;
+  bottom: 10vh;
   transform: translateX(-50%);
   font-size: 16px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -96,13 +98,22 @@ body {
 }
 
 @keyframes fadein {
-  from { bottom: 0; opacity: 0; }
-  to { bottom: 30px; opacity: 1; }
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to { opacity: 0.95; transform: translateX(-50%) translateY(0); }
 }
 
 @keyframes fadeout {
-  from { bottom: 30px; opacity: 1; }
-  to { bottom: 0; opacity: 0; }
+  from { opacity: 0.95; transform: translateX(-50%) translateY(0); }
+  to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}
+
+/* Ajustes para móviles */
+@media (max-width: 600px) {
+  .toast {
+    font-size: 13px;
+    padding: 8px 15px;
+    top: 10px;
+  }
 }
 
 .copy-btn {
