@@ -52,7 +52,7 @@ Permite buscar partidas, agregar y ver sus descripciones, trazar rutas y más.
 
 ## 📂 Estructura básica del proyecto
 
-mapTL/
+'''mapTL/
 ├── app.py
 ├── requirements.txt
 ├── static/
@@ -65,7 +65,6 @@ mapTL/
 │   └── descripciones.json
 ├── templates/
 │   └── index.html
-└── README.md
-
+└── README.md'''
 
 ##✍️ Desarrollado por Agustín Affricani
