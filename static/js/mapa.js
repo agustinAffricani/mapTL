@@ -89,13 +89,11 @@ fetch("/static/descripciones.json")
       .then(res => res.json())
       .then(data => {
         geojsonLayerData = data;
-
         parcelasLayer = L.geoJSON(data, {
           style: estiloDefault,
           onEachFeature: function(feature, layer) {
             // si hay descripción en el JSON, la agregamos
             let descripcionExistente = descripcionesData[feature.properties.PDA] || "";
-
             layer.bindPopup(
               `<b>Partida:</b> ${feature.properties.PDA || "N/A"} 
               <button class="copy-btn" data-partida="${feature.properties.PDA}">📋 Copiar</button><br>
@@ -489,3 +487,51 @@ document.getElementById("filtroTabla").addEventListener("input", function () {
     }
   });
 });
+
+// Toggle del panel lateral
+document.getElementById("toolbox-button").addEventListener("click", () => {
+  const panel = document.getElementById("toolbox-panel");
+  panel.style.display = (panel.style.display === "block") ? "none" : "block";
+});
+
+// Acordeón
+document.querySelectorAll(".accordion").forEach(btn => {
+  btn.addEventListener("click", function () {
+    this.classList.toggle("active");
+    const panel = this.nextElementSibling;
+    panel.classList.toggle("show");
+  });
+});
+
+// Función para aplicar color según superficie
+function applySurfaceColor() {
+  const min = parseFloat(document.getElementById("minArea").value);
+  const max = parseFloat(document.getElementById("maxArea").value);
+  const color = document.getElementById("surfaceColor").value;
+
+  if (isNaN(min) || isNaN(max)) {
+    alert("Por favor ingresa valores válidos de superficie.");
+    return;
+  }
+
+  parcelasLayer.eachLayer(layer => {
+    if (layer.feature && layer.feature.properties) {
+      const area = layer.feature.properties.ARA1; // en m²
+      if (area !== undefined) {
+        const areaHa = area / 10000; // a hectáreas
+        if (areaHa >= min && areaHa <= max) {
+          layer.setStyle({ fillColor: color, color: color, backgroundColor: color });
+        } 
+      }
+    }
+  });
+}
+
+// Resetear colores al default
+function resetSurfaceColor() {
+  parcelasLayer.eachLayer(layer => {
+    if (layer.feature && layer.feature.properties) {
+      parcelasLayer.resetStyle(layer); // restaura al estiloDefault original
+    }
+  });
+}

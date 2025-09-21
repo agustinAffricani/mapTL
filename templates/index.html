@@ -39,8 +39,56 @@
         </tbody>
       </table>
     </div>
+  </div><div id="modalSuperficie" class="modal">
+  <div class="modal-content">
+    <span class="close-superficie">&times;</span>
+    <h3>Pintar parcelas por superficie</h3>
+    
+    <label>Superficie mínima (ha):</label>
+    <input type="number" id="superficieMin" placeholder="Ej: 1">
+    
+    <label>Superficie máxima (ha):</label>
+    <input type="number" id="superficieMax" placeholder="Ej: 10">
+    
+    <label>Color:</label>
+    <input type="color" id="colorSuperficie" value="#ff0000">
+    
+    <button id="aplicarSuperficie">Aplicar</button>
+    <button id="resetSuperficie">Reset</button>
   </div>
+</div>
   <div id="map"></div>
+
+<!-- Botón flotante -->
+<div id="toolbox-button">⚙️</div>
+
+<!-- Panel lateral con acordeón -->
+<div id="toolbox-panel">
+  <h3>Herramientas</h3>
+
+  <!-- Herramienta: pintar por superficie -->
+  <button class="accordion">🎨 Pintar por superficie</button>
+  <div class="panel">
+    <label>Superficie mínima (ha):</label>
+    <input type="number" id="minArea" placeholder="Ej. 10">
+
+    <label>Superficie máxima (ha):</label>
+    <input type="number" id="maxArea" placeholder="Ej. 50">
+
+    <label>Color:</label>
+    <input type="color" id="surfaceColor" value="#ff0000">
+
+    <div class="buttons">
+      <button onclick="applySurfaceColor()">Aplicar</button>
+      <button onclick="resetSurfaceColor()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Otra herramienta (ejemplo futuro) -->
+  <button class="accordion">🛠️ Otra herramienta</button>
+  <div class="panel">
+    <p>Contenido para la próxima funcionalidad.</p>
+  </div>
 </div>
 
 <script src="/static/js/mapa.js"></script>

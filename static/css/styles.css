@@ -14,6 +14,9 @@ body {
   max-width: 1000px;
   text-align: center;
 }
+.leaflet-control-zoom-out, .leaflet-control-zoom-in {
+  z-index: 9 !important;
+}
 
 /* Mapa en recuadro centrado */
 #map {
@@ -41,7 +44,7 @@ body {
   font-size: 16px;
 }
 
-.controls button {
+.controls button, #toolbox-panel button {
   padding: 8px 16px;
   margin-left: 8px;
   border: none;
@@ -256,6 +259,132 @@ button.save-desc-btn:hover {
   box-shadow: 0 2px 8px rgba(0,123,255,0.4);
 }
 
+/* Botón flotante */
+#toolbox-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: #0078d7;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 99999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+/* Panel lateral (fijo al costado, se oculta con display:none) */
+#toolbox-panel {
+  position: absolute;
+  top: 70px;
+  left: 5px;
+  width: 280px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 15px;
+  display: none;
+  z-index: 99999;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  border-radius: 8px;
+}
+
+/* Acordeón */
+.accordion {
+  background: #0078d7;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  font-size: 16px;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.accordion.active {
+  background: #005a9e;
+}
+
+.panel {
+  display: none;
+  padding: 10px;
+  background: #f9f9f9;
+  border-left: 2px solid #0078d7;
+  margin-bottom: 10px;
+}
+
+.panel.show {
+  display: block;
+}
+
+#toolbox-panel .buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Estilo para los inputs de superficie */
+#minArea,
+#maxArea,
+#superficieMin,
+#superficieMax {
+  width: 80%;
+  padding: 6px 10px;
+  margin: 5px 0 10px 0;
+  border-radius: 6px;
+  border: 1px solid #0077b6;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+/* Efecto al enfocar */
+#minArea:focus,
+#maxArea:focus,
+#superficieMin:focus,
+#superficieMax:focus {
+  border-color: #023e8a;
+  box-shadow: 0 0 5px rgba(0, 119, 182, 0.5);
+}
+
+/* Estilo para el color picker */
+#surfaceColor,
+#colorSuperficie {
+  width: 50px;
+  height: 30px;
+  border: none;
+  padding: 0;
+  margin: 5px 0 10px 0;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Botón aplicar y reset */
+#aplicarSuperficie,
+#resetSuperficie {
+  padding: 8px 16px;
+  margin: 5px 5px 10px 0;
+  border: none;
+  border-radius: 6px;
+  background-color: #0077b6;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#aplicarSuperficie:hover,
+#resetSuperficie:hover {
+  background-color: #023e8a;
+}
 
 /* ✅ Adaptación para móviles */
 @media (max-width: 600px) {
