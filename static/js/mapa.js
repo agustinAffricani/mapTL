@@ -473,3 +473,19 @@ function centrarEnParcela(partida) {
   }
 }
 
+// Filtrar tabla descripcion
+document.getElementById("filtroTabla").addEventListener("input", function () {
+  const filtro = this.value.toLowerCase();
+  const filas = document.querySelectorAll("#tablaDescripciones tbody tr");
+
+  filas.forEach(fila => {
+    const partida = fila.cells[0].textContent.toLowerCase();
+    const descripcion = fila.cells[1].textContent.toLowerCase();
+
+    if (partida.includes(filtro) || descripcion.includes(filtro)) {
+      fila.style.display = ""; // mostrar
+    } else {
+      fila.style.display = "none"; // ocultar
+    }
+  });
+});

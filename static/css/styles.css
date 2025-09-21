@@ -235,6 +235,28 @@ button.save-desc-btn:hover {
   cursor: pointer;
 }
 
+.filtro-container {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#filtroTabla {
+  width: 90%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#filtroTabla:focus {
+  border-color: #007bff;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.4);
+}
+
+
 /* ✅ Adaptación para móviles */
 @media (max-width: 600px) {
   .leaflet-popup-content {
