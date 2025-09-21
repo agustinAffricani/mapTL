@@ -50,22 +50,4 @@ Permite buscar partidas, agregar y ver sus descripciones, trazar rutas y más.
 - GeoJSON para datos de parcelas (capa de las parcelas).  
 - [Render](https://render.com/) – Deploy.  
 
-## 📂 Estructura básica del proyecto
-
-mapTL/
-├── app.py                  # Archivo principal de Flask
-├── requirements.txt        # Dependencias de Python
-├── static/
-│   ├── css/
-│   │   └── style.css       # Estilos de la aplicación
-│   ├── js/
-│   │   └── mapa.js         # Lógica del mapa y búsquedas
-│   ├── geojson/
-│   │   └── parcelas.geojson # Datos de las parcelas
-│   └── descripciones.json  # Descripciones guardadas por partida
-├── templates/
-│   └── index.html          # Plantilla principal
-└── README.md               # Este archivo
-
-
 ##✍️ Desarrollado por Agustín Affricani

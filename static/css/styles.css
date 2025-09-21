@@ -6,6 +6,7 @@ body {
   padding: 20px;
   display: flex;
   justify-content: center;
+  background-color: #b9ccdf; /* gris-azulado muy claro */
 }
 
 .container {
