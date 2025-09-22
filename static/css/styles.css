@@ -259,38 +259,52 @@ button.save-desc-btn:hover {
   box-shadow: 0 2px 8px rgba(0,123,255,0.4);
 }
 
-/* Botón flotante */
+/* contenedor del mapa (asegurate de usar el tuyo) */
+#map-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  position: relative;   /* <- MUY IMPORTANTE */
+}
+
+/* map ocupa su espacio (no usar position:fixed) */
+#map {
+  height: 70vh; /* o la altura que quieras */
+  width: 100%;
+}
+
+/* botón flotante RELATIVO al contenedor */
 #toolbox-button {
-  position: absolute;
-  top: 5px;
-  left: 5px;
+  position: absolute;   /* relativo a #map-container */
+  top: 80px;
+  left: 8px;           /* lo pone en la esquina superior izquierda del contenedor */
+  z-index: 99999;
   background: #0078d7;
   color: white;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 20px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  border: none;
   cursor: pointer;
-  z-index: 99999;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
-/* Panel lateral (fijo al costado, se oculta con display:none) */
+/* panel lateral dentro del contenedor (no sale de la página al scrollear) */
 #toolbox-panel {
-  position: absolute;
-  top: 70px;
-  left: 5px;
-  width: 280px;
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 15px;
-  display: none;
+  position: absolute;   /* relativo a #map-container */
+  top: 130px;
+  left: 18px;
+  width: 250px;
   z-index: 99999;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  background: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: none; /* se muestra con JS */
 }
 
 /* Acordeón */
