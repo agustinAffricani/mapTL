@@ -494,14 +494,23 @@ document.getElementById("toolbox-button").addEventListener("click", () => {
   panel.style.display = (panel.style.display === "block") ? "none" : "block";
 });
 
-// Acordeón
+// Acordeon de herramientas
 document.querySelectorAll(".accordion").forEach(btn => {
   btn.addEventListener("click", function () {
+    // cerrar todos los paneles menos el actual
+    document.querySelectorAll(".accordion").forEach(otherBtn => {
+      if (otherBtn !== this) {
+        otherBtn.classList.remove("active");
+        otherBtn.nextElementSibling.classList.remove("show");
+      }
+    });
+
+    // toggle del panel actual
     this.classList.toggle("active");
-    const panel = this.nextElementSibling;
-    panel.classList.toggle("show");
+    this.nextElementSibling.classList.toggle("show");
   });
 });
+
 
 // Función para aplicar color según superficie
 function applySurfaceColor() {
