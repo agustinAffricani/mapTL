@@ -121,19 +121,21 @@ body {
 }
 
 .copy-btn {
-  margin-left: 8px;
-  padding: 5px;
-  font-size: 12px;
+  background: #eaeaea;
   border: none;
-  border-radius: 6px;
-  background-color: #0077b6;
-  color: white;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 12px;
   cursor: pointer;
+  margin-left: 5px;
+  color: #444;
 }
 
 .copy-btn:hover {
-  background-color: #023e8a;
+  background: #ccc;
+  box-shadow: #023e8a 0 0 3px;
 }
+
 
 .distancia-widget {
   background: white;
@@ -399,6 +401,23 @@ button.save-desc-btn:hover {
 #aplicarSuperficie:hover,
 #resetSuperficie:hover {
   background-color: #023e8a;
+}
+
+.coord-container {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* separación entre coords y botón */
+  margin-bottom: 5px;
+}
+
+.coord-box {
+  background: #f1f1f1;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #333;
+  white-space: nowrap; /* evita el salto de línea */
 }
 
 /* ✅ Adaptación para móviles */

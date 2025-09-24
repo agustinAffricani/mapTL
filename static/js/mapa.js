@@ -113,17 +113,26 @@ fetch("/static/descripciones.json")
               // Ajustar zoom antes de abrir popup
               map.fitBounds(resaltadoLayer.getBounds());
               let descripcionExistente = descripcionesData[feature.properties.PDA] || "";
+              // calcular centroide aproximado (Leaflet tiene getBounds().getCenter())
+              let centro = layer.getBounds().getCenter();
+              let coords = `${centro.lat.toFixed(6)}, ${centro.lng.toFixed(6)}`;
               resaltadoLayer.eachLayer(function(subLayer) {
                 subLayer.bindPopup(
                   `<b>Partida:</b> ${feature.properties.PDA || "N/A"} 
-                  <button class="copy-btn" data-partida="${feature.properties.PDA}">📋 Copiar</button><br>
+                  <button class="copy-btn" data-partida="${feature.properties.PDA}">Copiar 📋</button><br>
                   <hr>
                   <b>Tipo:</b> ${feature.properties.TPA || "N/A"}<br>
                   <b>Superficie (ha):</b> ${feature.properties.ARA1 ? (feature.properties.ARA1/10000).toFixed(2) : "N/A"}<br>
                   <hr>
+                  <b>Coordenadas:</b> 
+                    <div class="coord-container">
+                      <span class="coord-box">${coords}</span>
+                      <button class="copy-coords-btn copy-btn" data-coords="${coords}">Copiar 📋</button>
+                    </div>
                   <b>Descripción:</b> 
                   <input type="text" class="descripcion-input" id="desc-${feature.properties.PDA}" placeholder="Agregar descripción" value="${descripcionExistente}">
-                  <button class="save-desc-btn" data-pda="${feature.properties.PDA}">💾</button>`
+                  <button class="save-desc-btn" data-pda="${feature.properties.PDA}">💾</button>
+                  `
                 ).openPopup();
               });
 
@@ -296,7 +305,7 @@ partidaInput.addEventListener("input", function () {
   }
 });
 
-// Detectar click en botones de copiar dentro de popups
+// Detectar click en boton de copiar dpartida dentro de popups
 document.addEventListener("click", function(e) {
   if (e.target && e.target.classList.contains("copy-btn")) {
     const partida = e.target.getAttribute("data-partida");
@@ -511,7 +520,6 @@ document.querySelectorAll(".accordion").forEach(btn => {
   });
 });
 
-
 // Función para aplicar color según superficie
 function applySurfaceColor() {
   const min = parseFloat(document.getElementById("minArea").value);
@@ -544,3 +552,18 @@ function resetSurfaceColor() {
     }
   });
 }
+
+// Detectar click en boton de copiar coord dentro de popups
+document.addEventListener("click", function(e) {
+  if (e.target && e.target.classList.contains("copy-coords-btn")) {
+    const coords = e.target.getAttribute("data-coords");
+    if (coords) {
+      navigator.clipboard.writeText(coords).then(() => {
+        mostrarToast("✅ Coordenadas copiadas: " + coords);
+      }).catch(err => {
+        console.error("Error al copiar:", err);
+        mostrarToast("❌ No se pudo copiar");
+      });
+    }
+  }
+});
