@@ -11,9 +11,10 @@ body {
 
 .container {
   width: 90%;
-  max-width: 1000px;
+  max-width: 1600px;
   text-align: center;
 }
+
 .leaflet-control-zoom-out, .leaflet-control-zoom-in {
   z-index: 9 !important;
 }
@@ -201,11 +202,11 @@ button.save-desc-btn:hover {
 
 .modal-content {
   background: #fff;
-  margin: 10% auto;
+  margin: 10px auto;
   padding: 20px;
   border-radius: 8px;
   width: 80%;
-  max-height: 70%;
+  max-height: 90%;
   overflow-y: auto;
 }
 
