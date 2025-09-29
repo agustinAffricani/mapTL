@@ -139,35 +139,53 @@ export function inicializarEventosPopups() {
             }
         }
     });
-}
 
-// Tabla buscar por Descripción
-document.getElementById("btnBuscarDesc")?.addEventListener("click", () => {
-    obtenerListaDescripciones()
-        .then(descripciones => {
-            let tbody = document.querySelector("#tablaDescripciones tbody");
-            tbody.innerHTML = "";
+    // Tabla buscar por Descripción
+    document.getElementById("btnBuscarDesc")?.addEventListener("click", () => {
+        obtenerListaDescripciones()
+            .then(descripciones => {
+                let tbody = document.querySelector("#tablaDescripciones tbody");
+                tbody.innerHTML = "";
 
-            Object.entries(descripciones).forEach(([clave, descripcion]) => {
-                let tr = document.createElement("tr");
-                if (/^\d+$/.test(clave)) {
-                        tr.innerHTML = `<td>${clave}</td><td>${descripcion}</td>`;
-                    } else {
-                        tr.innerHTML = `<td>Sin Nro de Partida</td><td>${descripcion}</td>`;
-                    }
-                tr.addEventListener("click", () => {
-                    // Si la clave es un número (PDA), usar centrarEnParcela
-                    // Si no, asumir que es CCA y usar centrarEnParcelaPorCCA
+                Object.entries(descripciones).forEach(([clave, descripcion]) => {
+                    let tr = document.createElement("tr");
                     if (/^\d+$/.test(clave)) {
-                        centrarEnParcela(clave);
-                    } else {
-                        centrarEnParcelaPorCCA(clave);
-                    }
-                    cerrarModal();
+                            tr.innerHTML = `<td>${clave}</td><td>${descripcion}</td>`;
+                        } else {
+                            tr.innerHTML = `<td>Sin Nro de Partida</td><td>${descripcion}</td>`;
+                        }
+                    tr.addEventListener("click", () => {
+                        // Si la clave es un número (PDA), usar centrarEnParcela
+                        // Si no, asumir que es CCA y usar centrarEnParcelaPorCCA
+                        if (/^\d+$/.test(clave)) {
+                            centrarEnParcela(clave);
+                        } else {
+                            centrarEnParcelaPorCCA(clave);
+                        }
+                        cerrarModal();
+                    });
+                    tbody.appendChild(tr);
                 });
-                tbody.appendChild(tr);
+                abrirModal();
+            })
+            .catch(err => console.error("Error:", err));
+    });
+
+    // Filtro en tabla de descripciones (evento delegado)
+    document.addEventListener('input', function(e) {
+        if (e.target.id === 'filtroTabla') {
+            const filtro = e.target.value.toLowerCase();
+            const filas = document.querySelectorAll("#tablaDescripciones tbody tr");
+            
+            filas.forEach(fila => {
+                // Verificar que la fila tenga al menos 2 celdas
+                if (fila.cells.length >= 2) {
+                    const partida = (fila.cells[0].textContent || '').toLowerCase();
+                    const descripcion = (fila.cells[1].textContent || '').toLowerCase();
+                    const coincide = partida.includes(filtro) || descripcion.includes(filtro);
+                    fila.style.display = coincide ? '' : 'none';
+                }
             });
-            abrirModal();
-        })
-        .catch(err => console.error("Error:", err));
-});
+        }
+    });
+}
