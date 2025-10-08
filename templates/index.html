@@ -13,13 +13,14 @@
 <div class="container">
   <h1>Mapa de Parcelas TL 🗺️</h1>
   <div id="toast" class="toast"></div>
-  <div class="controls">
+  <div id="toastPartida"></div>
+  <!--<div class="controls">
     <input type="text" id="partidaInput" placeholder="Ingrese partida...">
     <div id="toastPartida"></div>
     <button onclick="buscarPartida()">🔎 Buscar</button>
     <button id="btnBuscarDesc">📋 Buscar por Descripción</button>
     <button onclick="borrarResaltado(); borrarRuta();">🗑️ Borrar búsqueda</button>
-  </div>
+  </div>-->
   <div id="modalDesc" class="modal">
     <div class="modal-content">
       <span class="close">x</span>
@@ -61,7 +62,7 @@
 <div id="map"></div>
 
 <!-- Botón flotante -->
-<div id="toolbox-button">⚙️</div>
+<div id="toolbox-button">🛠️</div>
 
 <!-- Panel lateral con acordeón -->
 <div id="toolbox-panel">
@@ -93,5 +94,9 @@
 </div>
 </div>
 <script type="module" src="/static/js/main.js"></script>
+<!-- Footer -->
+<footer class="app-footer">
+    <p>Desarrollado por JAAff ©️</p>
+</footer>
 </body>
 </html>

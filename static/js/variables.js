@@ -1,5 +1,7 @@
 // Mapa
-export let map = L.map('map').setView([-35.98, -62.73], 12);
+export let map = L.map('map', {
+    zoomControl: false // ✅ Desactivar zoom automático
+}).setView([-35.98, -62.73], 12);
 
 // Pane para labels
 map.createPane('labels');
@@ -31,7 +33,7 @@ const baseMaps = {
     "Callejero": callejero,
     "Satelital": satelitalHibrido
 };
-L.control.layers(baseMaps).addTo(map);
+export const controlCapas = L.control.layers(baseMaps);
 
 // ✅ Estado global (todo lo mutable aquí)
 export const datosGlobales = {

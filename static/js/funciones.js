@@ -1,5 +1,5 @@
 import { distanciaControl, map, datosGlobales } from './variables.js';
-
+import { obtenerListaDescripciones } from './fetchs.js';
 // Estilos
 const ESTILO_DEFAULT = { color: "MediumBlue", weight: 1, fillOpacity: 0.06 };
 const ESTILO_RESALTADO = { color: "red", weight: 3, fillOpacity: 0.3 };
@@ -223,6 +223,38 @@ export function abrirModal() {
 export function cerrarModal() {
     document.getElementById("modalDesc").style.display = "none";
 }
+
+ // Tabla buscar por Descripción
+export function buscarDesc() {
+    obtenerListaDescripciones()
+            .then(descripciones => {
+                let tbody = document.querySelector("#tablaDescripciones tbody");
+                tbody.innerHTML = "";
+
+                Object.entries(descripciones).forEach(([clave, descripcion]) => {
+                    let tr = document.createElement("tr");
+                    if (/^\d+$/.test(clave)) {
+                            tr.innerHTML = `<td>${clave}</td><td>${descripcion}</td>`;
+                        } else {
+                            tr.innerHTML = `<td>Sin Nro de Partida</td><td>${descripcion}</td>`;
+                        }
+                    tr.addEventListener("click", () => {
+                        // Si la clave es un número (PDA), usar centrarEnParcela
+                        // Si no, asumir que es CCA y usar centrarEnParcelaPorCCA
+                        if (/^\d+$/.test(clave)) {
+                            centrarEnParcela(clave);
+                        } else {
+                            centrarEnParcelaPorCCA(clave);
+                        }
+                        cerrarModal();
+                    });
+                    tbody.appendChild(tr);
+                });
+                abrirModal();
+            })
+            .catch(err => console.error("Error:", err));
+}
+
 
 // Centrar en parcela (reutiliza el evento de clic)
 export function centrarEnParcela(partida) {
