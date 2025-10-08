@@ -31,6 +31,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ✅ Derecha: primero capas, luego zoom
     controlCapas.addTo(map);
-    controlZoom.addTo(map); // El zoom aparecerá a la derecha del control de capas
 });
 

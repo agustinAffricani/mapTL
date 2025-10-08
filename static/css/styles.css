@@ -77,13 +77,14 @@ body {
 }
 
 /* Ajuste para móviles */
-@media (max-width: 600px) {
-    .menu-panel {
-        left: auto !important;
-        right: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 8px !important;
-    }
+.menu-panel {
+    max-width: calc(100vw - 60px); /* Deja margen de 60px en total */
+    overflow-x: hidden;
+}
+
+.menu-panel input,
+.menu-panel button {
+    font-size: 13px; /* Texto más pequeño en móviles */
 }
 
 #partidaInput {
