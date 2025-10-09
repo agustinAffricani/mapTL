@@ -93,6 +93,56 @@
   </div>
 </div>
 </div>
+<!-- Botón de ayuda -->
+<button id="help-button" class="help-button">❔</button>
+
+<!-- Modal de ayuda -->
+<div id="help-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-help">&times;</span>
+        <h3>ℹ️ Guía de uso - Mapa de Parcelas TL</h3>
+        <div class="help-content">
+             <h4>📱 Interacción con parcelas</h4>
+            <ul>
+                <li><strong>Haz clic en cualquier parcela</strong> para ver su información detallada</li>
+                <li><strong>Copiar partida</strong>: Usa el botón para copiar el número de partida y buscarlo nuevamente</li>
+                <li><strong>Copiar coordenadas</strong>: Copia las coordenadas para buscar la ubicación en Google Maps u otros servicios</li>
+                <li><strong>Guardar descripción</strong>: Agrega notas personales que se guardarán para futuras visitas</li>
+            </ul>
+            <h4>🔍 Búsqueda de parcelas</h4>
+            <ul>
+                <li>Ingresa el <strong>número de partida</strong> y haz clic en "Buscar"</li>
+                <li>La parcela se resaltará en rojo y se mostrará su información</li>
+                <li>Se trazará automáticamente una ruta desde tu ubicación actual</li>
+            </ul>
+
+            <h4>📋 Descripciones</h4>
+            <ul>
+                <li>Haz clic en "Por descripción" para ver todas las parcelas con descripción</li>
+                <li>Puedes agregar o editar descripciones en el popup de cada parcela</li>
+                <li>Las parcelas sin número de partida usan un identificador único (CCA)</li>
+            </ul>
+
+            <h4>🎨 Herramientas</h4>
+            <ul>
+                <li>Usa "Pintar por superficie" para resaltar parcelas por rango de hectáreas</li>
+                <li>Selecciona el rango mínimo y máximo, elige un color y haz clic en "Aplicar"</li>
+            </ul>
+
+            <h4>📱 Controles</h4>
+            <ul>
+                <li><strong>Menú hamburguesa</strong> (izquierda): Acceso a búsqueda rápida</li>
+                <li><strong>Botón de herramientas</strong> (izquierda): Funciones avanzadas</li>
+                <li><strong>Capas</strong> (derecha): Cambia entre mapa callejero y satelital</li>
+            </ul>
+
+            <p style="margin-top: 20px; font-size: 12px; color: #6c757d; text-decoration: solid;">
+                <strong>Consejo:</strong> Haz clic en cualquier parcela para ver su información detallada.
+            </p>
+        </div>
+    </div>
+</div>
+
 <script type="module" src="/static/js/main.js"></script>
 <!-- Footer -->
 <footer class="app-footer">

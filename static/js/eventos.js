@@ -346,6 +346,32 @@ export function inicializarEventosPopups() {
         }
     });
 
+        // Botón de ayuda y modal
+    document.getElementById('help-button')?.addEventListener('click', () => {
+        document.getElementById('help-modal').style.display = 'block';
+    });
+
+    document.querySelector('.close-help')?.addEventListener('click', () => {
+        document.getElementById('help-modal').style.display = 'none';
+    });
+
+    // Cerrar modal de ayuda al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'help-modal') {
+            e.target.style.display = 'none';
+        }
+    });
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const helpModal = document.getElementById('help-modal');
+            if (helpModal && helpModal.style.display === 'block') {
+                helpModal.style.display = 'none';
+            }
+        }
+    });
+
     // Cerrar paneles con la tecla Escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
